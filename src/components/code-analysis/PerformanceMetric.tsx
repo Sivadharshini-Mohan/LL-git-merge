@@ -1,3 +1,4 @@
+
 import React from "react";
 
 interface PerformanceMetricProps {
@@ -5,6 +6,7 @@ interface PerformanceMetricProps {
   percentage: string;
   description: string;
   icon: string;
+  className?: string; // Added optional className prop
 }
 
 export const PerformanceMetric: React.FC<PerformanceMetricProps> = ({
@@ -12,9 +14,10 @@ export const PerformanceMetric: React.FC<PerformanceMetricProps> = ({
   percentage,
   description,
   icon,
+  className = "",
 }) => {
   return (
-    <div className="bg-[rgba(244,251,251,1)] flex w-full flex-col overflow-hidden items-stretch justify-center px-3.5 py-3 rounded-lg">
+    <div className={`bg-[rgba(244,251,251,1)] flex w-full flex-col overflow-hidden items-stretch justify-center px-3.5 py-3 rounded-lg ${className}`}>
       <div className="w-full">
         <div className="text-[rgba(0,39,38,1)] text-xs leading-none tracking-[0.24px] uppercase">
           {label}

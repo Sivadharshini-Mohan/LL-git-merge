@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { ToggleSwitch } from "./ToggleSwitch";
 
@@ -8,6 +9,7 @@ interface SecurityRiskItemProps {
   icon?: string;
   details?: string[];
   isExpanded?: boolean;
+  className?: string; // Added optional className prop
 }
 
 export const SecurityRiskItem: React.FC<SecurityRiskItemProps> = ({
@@ -17,6 +19,7 @@ export const SecurityRiskItem: React.FC<SecurityRiskItemProps> = ({
   icon = "https://cdn.builder.io/api/v1/image/assets/5bb07a04370c48b48c5595f7aa252b55/e49378c7384eec2f43b1fa9eca788f862ede909f?placeholderIfAbsent=true",
   details = [],
   isExpanded = false,
+  className = "",
 }) => {
   const [expanded, setExpanded] = useState(isExpanded);
   const [active, setActive] = useState(isExpanded);
@@ -30,7 +33,7 @@ export const SecurityRiskItem: React.FC<SecurityRiskItemProps> = ({
 
   return (
     <div
-      className={`${expanded && active ? "bg-[rgba(244,251,251,1)]" : "bg-white"} rounded w-full overflow-hidden ${expanded ? "pb-[7px]" : ""}`}
+      className={`${expanded && active ? "bg-[rgba(244,251,251,1)]" : "bg-white"} rounded w-full overflow-hidden ${expanded ? "pb-[7px]" : ""} ${className}`}
     >
       <div
         className={`${active && expanded ? "bg-[rgba(240,255,250,1)]" : ""} flex min-h-9 w-full gap-1 pl-2 pr-2 py-2 rounded-md`}

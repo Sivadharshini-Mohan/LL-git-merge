@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Header } from "@/components/layout/Header";
 import { ProjectList } from "@/components/projects/ProjectList";
 import { AddProjectModal } from "@/components/projects/AddProjectModal";
+import Dashboard from "./Dashboard";
 
 export default function Index() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,6 +33,12 @@ export default function Index() {
         isOpen={isModalOpen}
         onClose={closeModal}
       />
+      <main className="min-h-screen">
+<Dashboard />
+</main>
     </div>
+
+
   );
 }
+

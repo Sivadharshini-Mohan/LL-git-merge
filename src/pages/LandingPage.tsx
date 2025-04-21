@@ -1,16 +1,16 @@
-
 import React, { useState } from "react";
 import { Header } from "@/components/layout/Header";
-import { ProjectList } from "@/components/projects/ProjectList";
+import { Projects } from "@/components/projects/Projects";
 import { AddProjectModal } from "@/components/projects/AddProjectModal";
-import Dashboard from "./Dashboard";
 import CodeAnalyseCompleted from "@/components/code-analysis/CodeAnalyseCompleted";
+import { useProjectsData } from "@/hooks/useProjectsData";
 
-export default function Index() {
+export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const { projects, addProject } = useProjectsData();
 
   return (
     <div className="max-w-none w-full min-h-screen flex flex-col items-center bg-[#F4FBFB] mx-auto">
@@ -26,23 +26,14 @@ export default function Index() {
             + Add New Project
           </button>
         </div>
-
-        <ProjectList openModal={openModal} />
+        <Projects openModal={openModal} projects={projects} />
       </main>
 
       <AddProjectModal
         isOpen={isModalOpen}
         onClose={closeModal}
+        addProject={addProject}
       />
-      <main className="min-h-screen">
-        <Dashboard />
-      </main>
-      <div className="min-h-screen bg-background">
-        <CodeAnalyseCompleted />
-      </div>
     </div>
-
-
   );
-}
-
+} 

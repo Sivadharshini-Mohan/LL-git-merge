@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { ProjectList } from "@/components/projects/ProjectList";
 import { AddProjectModal } from "@/components/projects/AddProjectModal";
 import Dashboard from "./Dashboard";
+import CodeAnalyseCompleted from "@/components/code-analysis/CodeAnalyseCompleted";
 
 export default function Index() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,6 +37,9 @@ export default function Index() {
       <main className="min-h-screen">
 <Dashboard />
 </main>
+<div className="min-h-screen bg-background">
+      <CodeAnalyseCompleted />
+    </div>
     </div>
 
 

@@ -35,11 +35,11 @@ export default function Index() {
         onClose={closeModal}
       />
       <main className="min-h-screen">
-<Dashboard />
-</main>
-<div className="min-h-screen bg-background">
-      <CodeAnalyseCompleted />
-    </div>
+        <Dashboard />
+      </main>
+      <div className="min-h-screen bg-background">
+        <CodeAnalyseCompleted />
+      </div>
     </div>
 
 

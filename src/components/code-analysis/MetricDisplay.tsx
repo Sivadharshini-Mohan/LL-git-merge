@@ -1,14 +1,16 @@
 import React from "react";
-
-type GradeType = "A" | "B" | "C" | "D";
+import GradeBadge, { GradeType } from "./GradeBadge";
 
 interface MetricDisplayProps {
   label: string;
-  value: string | GradeType;
+  value: string;
   grade?: GradeType;
-  icon?: string;
+  icon: string;
   infoText?: string;
+  className?: string;
 }
+
+export type { GradeType };
 
 export const MetricDisplay: React.FC<MetricDisplayProps> = ({
   label,
@@ -16,6 +18,7 @@ export const MetricDisplay: React.FC<MetricDisplayProps> = ({
   grade,
   icon,
   infoText,
+  className = "",
 }) => {
   const getGradeColor = (grade: GradeType) => {
     switch (grade) {
@@ -40,7 +43,9 @@ export const MetricDisplay: React.FC<MetricDisplayProps> = ({
         </div>
         {grade ? (
           <div
-            className={`${getGradeColor(grade)} self-stretch min-h-[34px] text-xl text-white whitespace-nowrap text-center tracking-[0.2px] w-[34px] h-[34px] px-2.5 rounded-[5px]`}
+            className={`${getGradeColor(
+              grade
+            )} self-stretch min-h-[34px] text-xl text-white whitespace-nowrap text-center tracking-[0.2px] w-[34px] h-[34px] px-2.5 rounded-[5px]`}
           >
             {grade}
           </div>

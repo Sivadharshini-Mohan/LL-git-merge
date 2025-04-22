@@ -1,19 +1,10 @@
-import React, { useState, useRef } from "react";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogTitle,
-  DialogDescription
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Upload } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { Project } from "@/types/project";
+import React, { useState } from "react";
+import { Project } from "../../types/project";
 
 interface AddProjectModalProps {
   isOpen: boolean;
   onClose: () => void;
-  addProject: (project: Project) => void;
+  addProject: (project: Omit<Project, "id">) => void;
 }
 
 export const AddProjectModal: React.FC<AddProjectModalProps> = ({
@@ -21,215 +12,79 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = ({
   onClose,
   addProject,
 }) => {
-  const [uploadMethod, setUploadMethod] = useState<"upload" | "github">("upload");
-  const [projectName, setProjectName] = useState("");
-  const [description, setDescription] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+  });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setSelectedFile(e.target.files[0]);
-      toast({
-        title: "File selected",
-        description: `Selected: ${e.target.files[0].name}`,
-      });
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const newProject: Project = {
-      id: Date.now(), // Using timestamp as a simple unique ID
-      title: projectName,
-      description,
-      stages: [
-        { name: "Code Analysis", status: "pending" },
-        { name: "Documentation", status: "pending" },
-        { name: "Testing", status: "pending" }
-      ],
-      lastUpdated: new Date().toISOString()
-    };
-    
-    addProject(newProject);
-    
-    toast({
-      title: "Project analysis started",
-      description: "Your code is being analyzed...",
+    addProject({
+      ...formData,
+      lastUpdated: new Date().toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }),
     });
-    
-    // Reset form
-    setProjectName("");
-    setDescription("");
-    setSelectedFile(null);
-    
+    setFormData({ title: "", description: "" });
     onClose();
   };
 
-  const handleCancel = () => {
-    // Reset form state
-    setProjectName("");
-    setDescription("");
-    setSelectedFile(null);
-    // Close modal
-    onClose();
-  };
+  if (!isOpen) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[822px] flex flex-col gap-[30px] bg-white p-[30px] rounded-lg border-none max-md:w-[90%] max-md:p-5 max-sm:w-[95%] max-sm:p-[15px]">
-        <DialogTitle className="text-lg font-semibold text-[#15AE88]">
-          Add New Project
-        </DialogTitle>
-        
-        <DialogDescription className="sr-only">
-          Add a new project by uploading code or linking to GitHub
-        </DialogDescription>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-10 max-md:gap-5 max-sm:gap-[15px]">
-          <div className="flex flex-col gap-1.5 max-md:gap-1 max-sm:gap-[3px]">
-            <label className="text-sm text-[#1C1C1C]">Project Name</label>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl p-6 w-full max-w-md">
+        <h2 className="text-xl font-semibold mb-4">Add New Project</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Project Title</label>
             <input
               type="text"
-              placeholder="Eg. IRCTC"
-              className="text-sm text-[rgba(81,77,77,0.64)] w-full h-[50px] border shadow-[0_1px_2px_rgba(228,229,231,0.24)] bg-white p-3 rounded-[10px] border-solid border-[#D4D5D7]"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#15AE88]"
+              required
             />
           </div>
-
-          <div className="flex flex-col gap-1.5 max-md:gap-1 max-sm:gap-[3px]">
-            <label className="text-sm text-[#1C1C1C]">Description</label>
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-1">Description</label>
             <textarea
-              placeholder="Tell about the project"
-              className="text-sm text-[rgba(81,77,77,0.64)] w-full h-[100px] border shadow-[0_1px_2px_rgba(228,229,231,0.24)] bg-white p-3 rounded-[10px] border-solid border-[#D4D5D7]"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#15AE88]"
+              rows={3}
+              required
             />
           </div>
-
-          <div className="flex flex-col gap-1.5 max-md:gap-1 max-sm:gap-[3px]">
-            <label className="text-sm text-[#1C1C1C]">Source Code</label>
-            <div className="flex flex-col gap-[17px]">
-              <div className="flex items-center gap-2.5">
-                <input
-                  type="radio"
-                  name="sourceCode"
-                  checked={uploadMethod === "upload"}
-                  onChange={() => setUploadMethod("upload")}
-                  className="hidden"
-                  id="upload"
-                />
-                <label
-                  htmlFor="upload"
-                  className="flex items-center gap-2.5 w-full cursor-pointer"
-                >
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                    <rect
-                      x="0.75"
-                      y="0.75"
-                      width="16.5"
-                      height="16.5"
-                      rx="8.25"
-                      fill="white"
-                      stroke="#00C487"
-                      strokeWidth="1.5"
-                    />
-                    <circle
-                      cx="9"
-                      cy="9"
-                      r="4"
-                      fill={
-                        uploadMethod === "upload" ? "#15AE88" : "transparent"
-                      }
-                    />
-                  </svg>
-                  <div
-                    onClick={uploadMethod === "upload" ? triggerFileInput : undefined}
-                    className={`text-sm font-medium flex items-center justify-center ${uploadMethod === "upload" ? "text-[#00C487] cursor-pointer" : "text-[rgba(81,77,77,0.64)]"} w-full h-[50px] border shadow-[0_1px_2px_rgba(228,229,231,0.24)] bg-white p-3 rounded-[10px] border-solid ${uploadMethod === "upload" ? "border-[#15AE88]" : "border-[#D4D5D7]"}`}
-                  >
-                    <Upload className="mr-2 h-5 w-5" />
-                    {selectedFile ? selectedFile.name : "Upload or Drop Source Code"}
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      className="hidden"
-                      accept=".zip,.rar,.tar.gz,.7z"
-                    />
-                  </div>
-                </label>
-              </div>
-
-              <div className="flex items-center gap-2.5">
-                <input
-                  type="radio"
-                  name="sourceCode"
-                  checked={uploadMethod === "github"}
-                  onChange={() => setUploadMethod("github")}
-                  className="hidden"
-                  id="github"
-                />
-                <label
-                  htmlFor="github"
-                  className="flex items-center gap-2.5 w-full cursor-pointer"
-                >
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                    <circle
-                      cx="9"
-                      cy="9"
-                      r="8.25"
-                      fill="white"
-                      stroke="#00C487"
-                      strokeWidth="1.5"
-                    />
-                    <circle
-                      cx="9"
-                      cy="9"
-                      r="4"
-                      fill={
-                        uploadMethod === "github" ? "#15AE88" : "transparent"
-                      }
-                    />
-                  </svg>
-                  <div
-                    className={`w-full h-[50px] border shadow-[0_1px_2px_rgba(228,229,231,0.24)] flex items-center ${uploadMethod === "github" ? "" : "opacity-50"} bg-white p-3 rounded-[10px] border-solid ${uploadMethod === "github" ? "border-[#15AE88]" : "border-[#D4D5D7]"}`}
-                  >
-                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/717e2c02e279c11f71d776706810348df492f843?placeholderIfAbsent=true" alt="" className="w-[34px] h-[46px]" />
-                    <span className="text-sm text-[rgba(81,77,77,0.64)]">
-                      Paste Github link
-                    </span>
-                  </div>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex gap-3 justify-end max-md:flex-col max-md:gap-2.5 max-sm:flex-col max-sm:gap-2">
-            <Button
+          <div className="flex justify-end gap-2">
+            <button
               type="button"
-              onClick={handleCancel}
-              className="text-base font-semibold text-[#797979] w-[200px] h-14 shadow-[0_1px_2px_rgba(82,88,102,0.06)] border rounded-lg border-solid border-[#797979]"
-              variant="outline"
+              onClick={onClose}
+              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
             >
               Cancel
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
-              className={`text-base font-semibold text-white w-[200px] h-14 shadow-[0_1px_2px_rgba(82,88,102,0.06)] ${projectName.trim() ? "bg-[#15AE88]" : "bg-[rgba(21,174,136,0.4)]"} rounded-lg`}
-              disabled={!projectName.trim()}
+              className="px-4 py-2 bg-[#15AE88] text-white text-sm font-medium rounded-lg hover:bg-[#0f8e6d] transition-colors"
             >
-              Analyse Code
-            </Button>
+              Add Project
+            </button>
           </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };

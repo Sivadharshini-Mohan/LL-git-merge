@@ -8,15 +8,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Project } from "@/types/project";
 
 interface AddProjectModalProps {
   isOpen: boolean;
   onClose: () => void;
+  addProject: (project: Project) => void;
 }
 
 export const AddProjectModal: React.FC<AddProjectModalProps> = ({
   isOpen,
   onClose,
+  addProject,
 }) => {
   const [uploadMethod, setUploadMethod] = useState<"upload" | "github">("upload");
   const [projectName, setProjectName] = useState("");
@@ -41,18 +44,30 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here you would handle the project creation logic
-    console.log({
-      projectName,
+    
+    const newProject: Project = {
+      id: Date.now(), // Using timestamp as a simple unique ID
+      title: projectName,
       description,
-      uploadMethod,
-      selectedFile,
-    });
+      stages: [
+        { name: "Code Analysis", status: "pending" },
+        { name: "Documentation", status: "pending" },
+        { name: "Testing", status: "pending" }
+      ],
+      lastUpdated: new Date().toISOString()
+    };
+    
+    addProject(newProject);
     
     toast({
       title: "Project analysis started",
       description: "Your code is being analyzed...",
     });
+    
+    // Reset form
+    setProjectName("");
+    setDescription("");
+    setSelectedFile(null);
     
     onClose();
   };

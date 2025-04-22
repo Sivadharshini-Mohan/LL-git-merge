@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Header } from "@/components/layout/Header";
-import { Projects } from "@/components/projects/Projects";
-import { AddProjectModal } from "@/components/projects/AddProjectModal";
-import CodeAnalyseCompleted from "@/components/code-analysis/CodeAnalyseCompleted";
-import { useProjectsData } from "@/hooks/useProjectsData";
+import { useProjectsData } from "../hooks/useProjectsData";
+import { Header } from "../components/layout/Header";
+import { Projects } from "../components/projects/Projects";
+import { AddProjectModal } from "../components/projects/AddProjectModal";
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,7 +10,7 @@ export default function LandingPage() {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const { projects, addProject } = useProjectsData();
-
+  
   return (
     <div className="max-w-none w-full min-h-screen flex flex-col items-center bg-[#F4FBFB] mx-auto">
       <Header />
@@ -26,7 +25,7 @@ export default function LandingPage() {
             + Add New Project
           </button>
         </div>
-        <Projects openModal={openModal} projects={projects} />
+        <Projects projects={projects} openModal={openModal} />
       </main>
 
       <AddProjectModal

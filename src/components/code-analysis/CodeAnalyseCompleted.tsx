@@ -6,7 +6,7 @@ import { PerformanceMetric } from "./PerformanceMetric";
 import { CodeMetricRow } from "./CodeMetricRow";
 import { InsightMetricRow } from "./InsightMetricRow";
 
-const CodeAnalyseCompleted: React.FC = () => {
+export default function CodeAnalyseCompleted() {
   const [activeTab, setActiveTab] = useState("assessment");
 
   return (
@@ -1072,6 +1072,4 @@ const CodeAnalyseCompleted: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default CodeAnalyseCompleted;
+}

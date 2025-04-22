@@ -1,22 +1,15 @@
-import { Stage } from "@/components/dashboard/ProjectStages";
-
-export interface ProjectProgress {
-  label: string;
-  percentage: number;
-  lines: string;
-  time: string;
-}
-
-export interface ProjectStage {
-  name: string;
-  status: Stage["status"];
-}
+import { Stage } from "../components/dashboard/ProjectStages";
 
 export interface Project {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  progress?: ProjectProgress;
-  stages?: ProjectStage[];
+  progress?: {
+    label?: string;
+    percentage: number;
+    lines?: string;
+    time?: string;
+  };
+  stages?: Stage[];
   lastUpdated?: string;
 } 

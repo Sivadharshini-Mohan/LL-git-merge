@@ -1,6 +1,8 @@
 import React from "react";
-import { Project } from "@/types/project";
-import ProjectCard from "@/components/dashboard/ProjectCard";
+import { Project } from "../../types/project";
+import ProjectCard from "../dashboard/ProjectCard";
+import NavigationCard from "../ui/NavigationCard";
+import { navigateToCodeAnalysis } from "../../utils/navigation";
 
 interface ProjectsProps {
   openModal: () => void;
@@ -9,7 +11,7 @@ interface ProjectsProps {
 
 export const Projects: React.FC<ProjectsProps> = ({ openModal, projects }) => {
   return (
-    projects.length > 0 ? (
+    projects.length ? (
       <div className="w-full flex flex-col gap-3 mt-5">
         {projects.map((project) => (
           <ProjectCard
@@ -21,6 +23,7 @@ export const Projects: React.FC<ProjectsProps> = ({ openModal, projects }) => {
             lastUpdated={project.lastUpdated}
           />
         ))}
+   
       </div>
     ) : (
       <div className="w-full h-[795px] flex flex-col items-center justify-center shadow-[0_4px_10px_rgba(205,205,205,0.11)] bg-white rounded-2xl">

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/chart";
 import { Cell, Pie, PieChart, Sector } from "recharts";
 import { IssuesProgressBar } from "./IssuesProgressBar";
+import { goBack } from "../../utils/navigation";
 
 // For TypeScript type safety
 interface MemberDataItem {
@@ -525,11 +526,16 @@ export default function CodeAnalyseCompleted() {
           <div className="w-full max-md:max-w-full">
             <div className="flex w-full items-center justify-between flex-wrap max-md:max-w-full">
               <div className="self-stretch flex min-w-60 items-center gap-[5px] text-[28px] text-[rgba(0,65,45,1)] font-semibold tracking-[-0.17px] flex-wrap flex-1 shrink basis-[0%] my-auto max-md:max-w-full">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets/5bb07a04370c48b48c5595f7aa252b55/1cc648b6a904cecf5aa50af5aed40b069cdaf174?placeholderIfAbsent=true"
-                  className="aspect-[1] object-contain w-5 self-stretch shrink-0 my-auto"
-                  alt="Project icon"
-                />
+                <button
+                  onClick={goBack}
+                  className="border-0 bg-transparent p-0"
+                >
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets/5bb07a04370c48b48c5595f7aa252b55/1cc648b6a904cecf5aa50af5aed40b069cdaf174?placeholderIfAbsent=true"
+                    className="aspect-[1] object-contain w-5 self-stretch shrink-0 my-auto"
+                    alt="Project icon"
+                  />
+                </button>
                 <div className="self-stretch my-auto">
                   {analysisData.project.name}
                 </div>

@@ -9,7 +9,7 @@ export const Header: React.FC = () => {
           className="text-black font-bold text-lg cursor-pointer"
           onClick={navigateToProjects}
         >
-          Legacyleap
+              Legacyleap
         </div>
         <div className="flex items-center gap-4">
           <div className="w-8 h-8 bg-[#1A1A1A] rounded-full flex items-center justify-center">

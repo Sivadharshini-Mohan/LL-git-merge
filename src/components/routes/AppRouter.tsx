@@ -1,14 +1,11 @@
-import { Outlet, RouterProvider, createRootRoute, createRouter, createRoute } from '@tanstack/react-router';
+import { RouterProvider, createRootRoute, createRouter, createRoute } from '@tanstack/react-router';
 import LandingPage from '../../pages/LandingPage';
 import CodeAnalyseCompleted from '../code-analysis/CodeAnalyseCompleted';
+import { MainLayout } from '../layout/MainLayout';
 
 // Create a root route
 const rootRoute = createRootRoute({
-  component: () => (
-    <div className="app-container">
-      <Outlet />
-    </div>
-  ),
+  component: MainLayout,
 });
 
 // Define the routes

@@ -31,7 +31,6 @@ export default function LandingPage() {
       <AddProjectModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        addProject={addProject}
       />
     </div>
   );

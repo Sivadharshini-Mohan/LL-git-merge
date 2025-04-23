@@ -24,4 +24,18 @@ export const navigateTo = (path: string, params?: Record<string, string>) => {
     to: path,
     params
   });
+};
+
+/**
+ * Navigate back to the previous page
+ * Falls back to the home page if history is not available
+ */
+export const goBack = () => {
+  // Try to go back in history first
+  if (window.history.length > 1) {
+    router.navigate({ to: ".." });
+  } else {
+    // If no history, navigate to home page
+    router.navigate({ to: '/' });
+  }
 }; 
